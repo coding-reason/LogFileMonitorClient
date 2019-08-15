@@ -16,12 +16,12 @@ export class HubService {
   private httpC: HttpClient;
   private uri: string;
   constructor(http: HttpClient) {
-
     this.httpC = http;
     console.log("baseuri: " +  environment.baseUri);
     this.baseUri = environment.baseUri;
     this.setupHub();
   }
+
   baseUri: string;
   setupHub() {
     this.createConnection();
@@ -33,7 +33,7 @@ export class HubService {
     this.hubConnection.invoke(command, a, b);
   }
   private createConnection() {
-    this.uri = this.baseUri + '/logchanges';
+    this.uri = this.baseUri + '/api/logchanges';
     this.hubConnection = new HubConnectionBuilder()
       .withUrl(this.uri)
       .configureLogging(LogLevel.Information)
