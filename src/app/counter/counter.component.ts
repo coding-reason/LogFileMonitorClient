@@ -8,12 +8,15 @@ import {HubService} from '../hub.service';
 export class CounterComponent {
   public currentCount = 0;
   public lines: string[];
+  public hs: HubService;
   constructor(private hc: HubService) {
-    hc.addLines.subscribe(o => {
+    this.hs = hc;
+    this.hs.addLines.subscribe(o => {
       this.lines.push;
-    })
+    });
   }
   public incrementCounter() {
+    this.hs.setupHub();
     this.currentCount++;
   }
 }

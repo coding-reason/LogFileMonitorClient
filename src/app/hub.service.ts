@@ -33,7 +33,7 @@ export class HubService {
     this.hubConnection.invoke(command, a, b);
   }
   private createConnection() {
-    this.uri = this.baseUri + '/api/logchanges';
+    this.uri = this.baseUri + '/logchangehub';
     this.hubConnection = new HubConnectionBuilder()
       .withUrl(this.uri)
       .configureLogging(LogLevel.Information)
