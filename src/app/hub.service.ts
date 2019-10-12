@@ -12,18 +12,17 @@ export class HubService {
 
   private hubConnection: HubConnection;
   public addLines = new Subject<LineData>();
+  public addCount = new Subject<number>();
   public onConnected = new Subject<boolean>();
   private httpC: HttpClient;
   private uri: string;
-  constructor(http: HttpClient) {
+  private cnt = 0;
+
+  baseUri: string;
+  setupHub(http: HttpClient) {
     this.httpC = http;
     console.log("baseuri: " +  environment.baseUri);
     this.baseUri = environment.baseUri;
-    this.setupHub();
-  }
-
-  baseUri: string;
-  setupHub() {
     this.createConnection();
     this.registerOnServerEvents();
     this.startConnection();
@@ -50,11 +49,17 @@ export class HubService {
         console.error('Error while establishing connection :(');
       });
   }
+
   private registerOnServerEvents(): void {
-    this.hubConnection.on('Addlines', (fileId: number, lines: string[]) => {
-      this.addLines.next({ fileId: fileId, lines: lines });
-      console.log("registered addlines");
+    this.hubConnection.on('AddLines', (fileId: number, lines: string[]) => {
+      this.addLines.next({ fileId, lines });
+      this.cnt++;
+      this.addCount.next(this.cnt);
+      console.log("message on addlines: " + fileId);
+
     });
+    console.log("registered addlines");
+
   }
 }
 
